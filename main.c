@@ -95,7 +95,7 @@ typedef struct{
 } Table;
 
 Pager* pagerOpen(const char* fileName){
-    int fd = open(fileName, O_RDWR | O_CREAT | S_IWUSR | S_IRUSR);
+    int fd = open(fileName, O_RDWR | O_CREAT | S_IWUSR | S_IRUSR );
     if(fd == -1){
         printf("Unable to open file\n");
         exit(EXIT_FAILURE);
@@ -393,25 +393,25 @@ int main(int argc, char *argv[]) {
             case (PREPARE_SUCCESS):
                 break;
             case (PREPARE_NEGATIVE_ID):
-                printf("ID must be positive. \n");
+                printf("ID must be positive.\n");
                 continue;
             case (PREPARE_SYNTAX_ERROR):
-                printf("Syntax error. Could not parse statement. \n");
+                printf("Syntax error. Could not parse statement.\n");
                 continue;
             case (PREPARE_STRING_TOO_LONG):
                 printf("String is too long.\n");
                 continue;
             case (PREPARE_UNRECOGNIZED_STATEMENT):
-                printf("Unrecognized keyword at start of '%s'. \n", inputBuffer->buffer);
+                printf("Unrecognized keyword at start of '%s'.\n", inputBuffer->buffer);
                 continue;
         }
 
         switch (executeStatement(&statement, table)) {
             case (EXECUTE_SUCCESS):
-                printf("Executed. \n");
+                printf("Executed.\n");
                 break;
             case (EXECUTE_TABLE_FULL):
-                printf("Error: Table full. \n");
+                printf("Error: Table full.\n");
         }
     }
 }
