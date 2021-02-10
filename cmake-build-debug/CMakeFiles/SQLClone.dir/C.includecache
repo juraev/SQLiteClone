@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/user/CLionProjects/SQLClone/library.c
+library.h
+/Users/user/CLionProjects/SQLClone/library.h
+stdio.h
+-
+
+/Users/user/CLionProjects/SQLClone/library.h
+

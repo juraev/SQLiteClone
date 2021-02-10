@@ -1,0 +1,2 @@
+/usr/bin/ar qc libSQLClone.a  CMakeFiles/SQLClone.dir/library.c.o
+/usr/bin/ranlib libSQLClone.a

@@ -1,0 +1,4 @@
+/Users/user/CLionProjects/SQLClone/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/user/CLionProjects/SQLClone/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/user/CLionProjects/SQLClone/cmake-build-debug/CMakeFiles/SQLCloneExp.dir
+/Users/user/CLionProjects/SQLClone/cmake-build-debug/CMakeFiles/SQLClone.dir
