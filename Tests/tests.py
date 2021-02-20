@@ -2,7 +2,7 @@ from subprocess import Popen, PIPE, run
 
 
 def run_scripts(commands):
-    p = Popen(["cmake-build-debug/SQLCloneExp", "test.db"], stdin=PIPE, stdout=PIPE)
+    p = Popen(["cmake-build-debug/SQLCloneExp", "test.db"], stdin=PIPE, stdout=PIPE, stderr=PIPE)
 
     for command in commands:
         p.stdin.write(command)
@@ -72,7 +72,7 @@ def constants_test():
 
 
 def btree_test():
-
+    run(["rm", "-rf", "test.db"])
     commands = [bytes("insert {} user{} person{}@example.com\n".format(i, i, i), 'utf8') for i in [3, 1, 2]]
     commands.append(b'.btree\n')
     commands.append(b'.exit\n')
@@ -81,15 +81,61 @@ def btree_test():
         "db > Executed.",
         "db > Executed.",
         "db > Executed.",
-        "db > Tree: ",
-        "leaf (size 3)",
-        "  - 0 : 3",
-        "  - 1 : 1",
-        "  - 2 : 2",
+        "db > Tree:",
+        "- leaf (size 3)",
+        " - 1",
+        " - 2",
+        " - 3",
         "db > "
     ]
 
     assert expected_out == run_scripts(commands)
+
+
+def duplicate_test():
+    run(["rm", "-rf", "test.db"])
+
+    commands = [b'insert 1 user1 person1@example.com\n', b'insert 1 user1 person1@example.com\n', b'select\n', b'.exit']
+    expected_output = ['db > Executed.', 'db > Error: Duplicate key.', 'db > (1, user1, person1@example.com)',
+                       'Executed.', 'db > ']
+
+    assert expected_output == run_scripts(commands)
+
+
+def print_test():
+    run(["rm", "-rf", "test.db"])
+    commands = [bytes("insert {} user{} person{}@example.com\n".format(i, i, i), 'utf8') for i in range(1, 15)]
+    commands.append(b'.btree\n')
+    commands.append(b'insert 15 user15 person15@example.com\n')
+    commands.append(b'.exit\n')
+
+    expected_out = [
+        "db > Tree:",
+        "- internal (size 1)",
+        "  - leaf (size 7)",
+        "    - 1",
+        "    - 2",
+        "    - 3",
+        "    - 4",
+        "    - 5",
+        "    - 6",
+        "    - 7",
+        "  - key 7",
+        "  - leaf (size 7)",
+        "    - 8",
+        "    - 9",
+        "    - 10",
+        "    - 11",
+        "    - 12",
+        "    - 13",
+        "    - 14",
+        "db > Need to implement searching an internal node"
+    ]
+
+    u = run_scripts(commands)
+    print(u[14:])
+
+    assert expected_out == run_scripts(commands)[14:]
 
 
 if __name__ == '__main__':
@@ -98,3 +144,4 @@ if __name__ == '__main__':
     field_test()
     constants_test()
     btree_test()
+    print_test()
